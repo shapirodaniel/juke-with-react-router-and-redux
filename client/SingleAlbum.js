@@ -1,16 +1,17 @@
 import React from 'react';
 
+// a specific-album view that lists all songs on an album
+
 export default function SingleAlbum(props) {
-	const { album, clickHandler } = props;
-	console.log('album called by SingleAlbum', album);
-	console.log('albumId is: ', album.id);
+	const { selectedAlbum } = props;
+	console.log('this is props in singleAlbum: ', props);
 	return (
-		<div id='albums' className='row wrap'>
-			<div key={album.id} className='album'>
-				<a onClick={() => clickHandler(album.id)}>
-					<img src={album.artworkUrl} />
-					<p>{album.name}</p>
-					<small>{album.artist.name}</small>
+		<div id='selectedAlbums' className='row wrap'>
+			<div key={selectedAlbum.id} className='selectedAlbum'>
+				<a>
+					<img src={selectedAlbum.artworkUrl} />
+					<p>{selectedAlbum.name}</p>
+					<small>{selectedAlbum.artist.name}</small>
 				</a>
 			</div>
 		</div>

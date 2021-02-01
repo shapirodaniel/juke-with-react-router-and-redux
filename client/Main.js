@@ -8,7 +8,7 @@ export default class Main extends React.Component {
 		super(props);
 		this.state = {
 			albums: [],
-			selectedAlbum: {},
+			selectedAlbum: null,
 		};
 		this.clickHandler = this.clickHandler.bind(this);
 	}
@@ -25,16 +25,11 @@ export default class Main extends React.Component {
 		}
 	}
 
-	async clickHandler(albumId) {
-		try {
-			const { data } = await axios.get(`/api/albums/${albumId}`);
-			this.setState({
-				selectedAlbum: data,
-			});
-			console.log('data is: ', data);
-		} catch (err) {
-			console.error(err);
-		}
+	clickHandler(albumId) {
+		axios
+			.get(`/api/albums/${albumId}`)
+			.then(res => res.data)
+			.then(album => this.setState({ selectedAlbum: album }));
 	}
 
 	render() {
@@ -54,7 +49,10 @@ export default class Main extends React.Component {
 
 				{/* Albums */}
 				<div className='container'>
-					{selectedAlbum.id ? (
+					{/* check if selectedAlbum AND id
+					check first for defined, second for var defined */}
+					{selectedAlbum && selectedAlbum.id ? (
+						/* if singleAlbum hasn't been selected, all albums render */
 						<SingleAlbum
 							selectedAlbum={selectedAlbum}
 							clickHandler={this.clickHandler}
