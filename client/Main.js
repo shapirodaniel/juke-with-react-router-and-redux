@@ -5,6 +5,10 @@ import Player from './Player';
 import Sidebar from './Sidebar';
 import axios from 'axios';
 
+// bound to window object
+// that way only one audio ever exists at a time
+// and there isn't a race condition between
+// different audio sources on one page!
 const audio = document.createElement('audio');
 
 export default class Main extends React.Component {
@@ -13,6 +17,7 @@ export default class Main extends React.Component {
 		this.state = {
 			albums: [],
 			selectedAlbum: null,
+			currentSong: '',
 		};
 		this.clickHandler = this.clickHandler.bind(this);
 		this.home = this.home.bind(this);
@@ -44,29 +49,27 @@ export default class Main extends React.Component {
 		});
 	}
 
-	start(audioUrl) {
-		audio.src = audioUrl;
+	start(song) {
+		this.setState({
+			currentSong: song.id,
+		});
+		audio.src = song.audioUrl;
 		audio.load();
 		audio.play();
 	}
 
 	render() {
-		const albums = this.state.albums;
-		const selectedAlbum = this.state.selectedAlbum;
+		const { albums, selectedAlbum, currentSong } = this.state;
 		return (
 			<div id='main' className='row container'>
-				{/* <!-- Sidebar --> */}
 				<Sidebar home={this.home} />
 
-				{/* Albums */}
 				<div className='container'>
-					{/* check if selectedAlbum AND id
-					check first for defined, second for var defined */}
 					{selectedAlbum && selectedAlbum.id ? (
-						/* if singleAlbum hasn't been selected, all albums render */
 						<SingleAlbum
 							selectedAlbum={selectedAlbum}
 							start={this.start}
+							currentSong={currentSong}
 						/>
 					) : (
 						<AllAlbums
@@ -76,7 +79,6 @@ export default class Main extends React.Component {
 					)}
 				</div>
 
-				{/* <!-- Player --> */}
 				<Player />
 			</div>
 		);

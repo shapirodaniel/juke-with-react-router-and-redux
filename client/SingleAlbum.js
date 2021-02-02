@@ -3,7 +3,7 @@ import React from 'react';
 // a specific-album view that lists all songs on an album
 
 export default function SingleAlbum(props) {
-	const { selectedAlbum, start } = props;
+	const { selectedAlbum, start, currentSong } = props;
 	return (
 		<div id='single-album' className='column'>
 			<div className='album'>
@@ -27,8 +27,12 @@ export default function SingleAlbum(props) {
 							<tr key={i}>
 								<td>
 									<i
-										className='fa fa-play-circle'
-										onClick={() => start(song.audioUrl)}
+										className={
+											currentSong === song.id
+												? ''
+												: 'fa fa-play-circle'
+										}
+										onClick={() => start(song)}
 									/>
 								</td>
 								<td>{song.id}</td>
