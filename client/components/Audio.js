@@ -1,23 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { audioStatuses, setAudioStatus } from '../redux/audioStatus';
-
 class Audio extends React.Component {
 	componentDidMount() {
-		this.props.loadAudioStatus();
+		const { audioSrc } = this.props || '';
+		// if-check only sets audioSrc when it's defined
+		// since audioSrc is initialized to empty string
+		if (audioSrc) document.getElementById('audioElement').src = audioSrc;
 	}
 
 	render() {
-		return <audio src={''} />;
+		const { audioSrc } = this.props || '';
+		return <audio id='audioElement' src={audioSrc} />;
 	}
 }
 
 const mapState = state => ({
-	audioStatus: state.audioStatus,
+	audioSrc: state.audio.src,
 });
 
-const mapDispatch = dispatch => ({
-	loadAudioStatus: () => dispatch(setAudioStatus(audioStatuses.PAUSED)),
-});
-
-export default connect(mapState, mapDispatch)(Audio);
+export default connect(mapState)(Audio);

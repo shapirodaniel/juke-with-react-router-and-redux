@@ -10,13 +10,13 @@ class AllAlbums extends React.Component {
 	}
 
 	render() {
-		const { albums, pickAlbum, currentSongSrc } = this.props || [];
+		const { albums } = this.props || [];
 
 		return (
 			<div id='albums' className='row wrap'>
 				{albums.map(album => (
 					<Link key={album.id} to={`/albums/${album.id}`}>
-						<AlbumCard album={album} pickAlbum={pickAlbum} />
+						<AlbumCard album={album} />
 					</Link>
 				))}
 			</div>
@@ -26,7 +26,6 @@ class AllAlbums extends React.Component {
 
 const mapState = state => ({
 	albums: state.albums,
-	currentSongSrc: state.currentSong.audioUrl,
 });
 
 const mapDispatch = dispatch => ({

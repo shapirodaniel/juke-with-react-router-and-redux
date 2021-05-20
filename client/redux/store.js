@@ -6,14 +6,14 @@ import thunkMiddleware from 'redux-thunk';
 import {
 	albumsReducer,
 	currentSongReducer,
-	audioStatusReducer,
+	audioReducer,
 	currentAlbumReducer,
 } from './';
 
 const rootReducer = combineReducers({
 	albums: albumsReducer,
 	currentSong: currentSongReducer,
-	audioStatus: audioStatusReducer,
+	audio: audioReducer,
 	currentAlbum: currentAlbumReducer,
 });
 
