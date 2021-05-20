@@ -3,17 +3,11 @@ import loggerMiddleware from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 
 // sub-reducers
-import {
-	albumsReducer,
-	currentSongReducer,
-	audioReducer,
-	currentAlbumReducer,
-} from './';
+import { albumsReducer, currentSongReducer, currentAlbumReducer } from './';
 
 const rootReducer = combineReducers({
 	albums: albumsReducer,
 	currentSong: currentSongReducer,
-	audio: audioReducer,
 	currentAlbum: currentAlbumReducer,
 });
 

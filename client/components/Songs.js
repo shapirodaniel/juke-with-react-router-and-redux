@@ -14,22 +14,16 @@ const TableHeaders = () => {
 	);
 };
 
-const SingleSong = ({
-	song,
-	trackNumber,
-	isCurrentlyPlaying,
-	setCurrentSong,
-}) => {
+const SingleSong = ({ song, trackNumber }) => {
 	const { name, artist, genre } = song;
 
 	return (
-		<tr className={isCurrentlyPlaying ? 'active' : ''}>
+		// placeholder logic
+		<tr className={false ? 'active' : ''}>
 			<td>
 				<i
-					className={
-						isCurrentlyPlaying ? 'fa fa-stop-circle' : 'fa fa-play-circle'
-					}
-					onClick={() => setCurrentSong(song)}
+					// placeholder logic
+					className={false ? 'fa fa-pause-circle' : 'fa fa-play-circle'}
 				/>
 			</td>
 			<td>{trackNumber}</td>
@@ -49,16 +43,11 @@ class Songs extends React.Component {
 					<TableHeaders />
 					{songs &&
 						songs.map((song, songIdx) => {
-							const isCurrentlyPlaying =
-								currentSong && currentSong.id === song.id;
-
 							return (
 								<SingleSong
 									key={song.id}
 									song={song}
 									trackNumber={songIdx + 1}
-									isCurrentlyPlaying={isCurrentlyPlaying}
-									setCurrentSong={setCurrentSong}
 								/>
 							);
 						})}

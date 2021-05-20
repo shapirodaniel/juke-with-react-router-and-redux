@@ -10,7 +10,6 @@ const setCurrentAlbum = album => ({
 export const fetchCurrentAlbum = albumId => async dispatch => {
 	try {
 		const { data: album } = await axios.get(`/api/albums/${albumId}`);
-		console.log(album);
 		dispatch(setCurrentAlbum(album));
 	} catch (err) {
 		console.error(err);
