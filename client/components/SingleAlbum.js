@@ -16,16 +16,8 @@ class SingleAlbum extends React.Component {
 			<div id='single-album' className='column'>
 				<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 					<AlbumCard album={currentAlbum} />
-					<Link
-						to='/'
-						style={{
-							textDecoration: 'none',
-							color: 'white',
-							padding: '8px',
-							height: 'min-content',
-						}}
-					>
-						{'<< Back To All Albums'}
+					<Link to='/'>
+						<div className='backBtn'>{'<< Back To All Albums'}</div>
 					</Link>
 				</div>
 				<Songs songs={currentAlbum.songs} />

@@ -13,15 +13,13 @@ class AllAlbums extends React.Component {
 		const { albums, pickAlbum, currentSongSrc } = this.props || [];
 
 		return (
-			<React.Fragment>
-				<div id='albums' className='row wrap'>
-					{albums.map(album => (
-						<Link key={album.id} to={`/albums/${album.id}`}>
-							<AlbumCard album={album} pickAlbum={pickAlbum} />
-						</Link>
-					))}
-				</div>
-			</React.Fragment>
+			<div id='albums' className='row wrap'>
+				{albums.map(album => (
+					<Link key={album.id} to={`/albums/${album.id}`}>
+						<AlbumCard album={album} pickAlbum={pickAlbum} />
+					</Link>
+				))}
+			</div>
 		);
 	}
 }
