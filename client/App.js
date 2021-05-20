@@ -3,7 +3,6 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import { Player, Sidebar } from './components';
 import Routes from './Routes';
-
 class App extends React.Component {
 	render() {
 		return (

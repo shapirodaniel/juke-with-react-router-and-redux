@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchCurrentAlbum } from '../redux/currentAlbum';
-import { AlbumCard, Songs } from './';
+import { AlbumCard, AllSongs } from './';
 
 class SingleAlbum extends React.Component {
 	componentDidMount() {
@@ -20,7 +20,7 @@ class SingleAlbum extends React.Component {
 						<div className='backBtn'>{'<< Back To All Albums'}</div>
 					</Link>
 				</div>
-				<Songs songs={currentAlbum.songs} />
+				<AllSongs songs={currentAlbum.songs} />
 			</div>
 		);
 	}
