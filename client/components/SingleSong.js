@@ -7,30 +7,32 @@ class SingleSong extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			btnType: 'fa fa-play-circle',
+			btnIcon: 'fa fa-play-circle',
 		};
-		this.toggleBtn = this.toggleBtn.bind(this);
+		this.toggleBtnIcon = this.toggleBtnIcon.bind(this);
 	}
 
-	toggleBtn() {
+	toggleBtnIcon() {
+		// use the callback form of setState here
+		// since we need to reference current state
 		this.setState(state => {
 			const change =
-				state.btnType === 'fa fa-play-circle'
+				state.btnIcon === 'fa fa-play-circle'
 					? 'fa fa-pause-circle'
 					: 'fa fa-play-circle';
 
-			return { btnType: change };
+			return { btnIcon: change };
 		});
 	}
 
 	render() {
 		const { trackNumber, song, currentSong, setCurrentSong } = this.props;
 		const { name, artist, genre } = song;
+		const { toggleBtnIcon } = this;
 
+		// utilities for single song playback controls
 		const isSelected = () => currentSong.id === song.id;
-
 		const isActiveSong = () => isSelected() && !AUDIO.paused;
-
 		const getBtnClass = () => {
 			if (isActiveSong()) return 'fa fa-pause-circle';
 			else return 'fa fa-play-circle';
@@ -48,8 +50,7 @@ class SingleSong extends React.Component {
 							// toggle audio element status
 							handlePlayerBtnClick(song.audioUrl);
 
-							// toggle btn icon
-							this.toggleBtn();
+							toggleBtnIcon();
 						}}
 					/>
 				</td>
