@@ -1,21 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { handlePlayerBtnClick } from '../AUDIO';
+import { setCurrentSong } from '../redux/currentSong';
+import { AUDIO, handlePlayerBtnClick } from '../AUDIO';
 
 class SingleSong extends React.Component {
 	render() {
-		const { trackNumber, song } = this.props;
+		const { trackNumber, song, currentSong, setCurrentSong } = this.props;
 		const { name, artist, genre } = song;
-		const { handleClick } = this;
 
 		return (
 			// placeholder logic
-			<tr className={false ? 'active' : ''}>
+			<tr className={currentSong.id === song.id ? 'active' : ''}>
 				<td>
 					<i
 						// placeholder logic
-						className={false ? 'fa fa-pause-circle' : 'fa fa-play-circle'}
-						onClick={() => handlePlayerBtnClick(song.audioUrl)}
+						className={
+							currentSong.id === song.id && !AUDIO.paused
+								? 'fa fa-pause-circle'
+								: 'fa fa-play-circle'
+						}
+						onClick={() => {
+							setCurrentSong(song);
+							handlePlayerBtnClick(song.audioUrl);
+						}}
 					/>
 				</td>
 				<td>{trackNumber}</td>
@@ -27,8 +34,12 @@ class SingleSong extends React.Component {
 	}
 }
 
-const mapDispatch = dispatch => ({
-	// do something
+const mapState = state => ({
+	currentSong: state.currentSong,
 });
 
-export default connect(null, mapDispatch)(SingleSong);
+const mapDispatch = dispatch => ({
+	setCurrentSong: song => dispatch(setCurrentSong(song)),
+});
+
+export default connect(mapState, mapDispatch)(SingleSong);
