@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Static file-serving middleware
 app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use('/albums', express.static(path.join(__dirname, '..', 'public')));
 app.use(
 	express.static(
 		path.join(__dirname, '..', 'node_modules', 'font-awesome', 'css')
