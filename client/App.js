@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import store from './redux/store';
-import { Audio, Player } from './components';
+import { Audio, Player, Sidebar } from './components';
 import Routes from './Routes';
 
 class App extends React.Component {
@@ -9,8 +9,13 @@ class App extends React.Component {
 		return (
 			<Provider store={store}>
 				<Audio />
-				<Routes />
-				<Player />
+				<div id='main' className='row container'>
+					<Sidebar />
+					<div className='container'>
+						<Routes />
+					</div>
+					<Player />
+				</div>
 			</Provider>
 		);
 	}
