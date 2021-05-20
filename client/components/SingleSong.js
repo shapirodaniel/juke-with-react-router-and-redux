@@ -38,21 +38,18 @@ class SingleSong extends React.Component {
 			else return 'fa fa-play-circle';
 		};
 
+		const handleClick = () => {
+			// only set song if not already selected
+			if (!isSelected()) setCurrentSong(song);
+			// toggle audio element status
+			handlePlayerBtnClick(song.audioUrl);
+			toggleBtnIcon();
+		};
+
 		return (
 			<tr className={isActiveSong() ? 'active' : ''}>
 				<td>
-					<i
-						className={getBtnClass()}
-						onClick={() => {
-							// only set song if not already selected
-							if (!isSelected()) setCurrentSong(song);
-
-							// toggle audio element status
-							handlePlayerBtnClick(song.audioUrl);
-
-							toggleBtnIcon();
-						}}
-					/>
+					<i className={getBtnClass()} onClick={handleClick} />
 				</td>
 				<td>{trackNumber}</td>
 				<td>{name}</td>
