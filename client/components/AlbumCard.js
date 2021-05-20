@@ -1,10 +1,7 @@
 import React from 'react';
 
 const AlbumCard = ({ album }) => {
-	console.log(album);
-
 	const { name, artworkUrl, artist } = album;
-
 	const { artistName } = artist || '';
 
 	return (

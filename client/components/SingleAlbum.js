@@ -1,11 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchCurrentAlbum } from '../redux/currentAlbum';
 import { AlbumCard, Songs } from './';
 
 class SingleAlbum extends React.Component {
 	componentDidMount() {
-		console.log(this.props);
 		this.props.loadCurrentAlbum(this.props.match.params.id);
 	}
 
@@ -14,7 +14,20 @@ class SingleAlbum extends React.Component {
 
 		return (
 			<div id='single-album' className='column'>
-				<AlbumCard album={currentAlbum} />
+				<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+					<AlbumCard album={currentAlbum} />
+					<Link
+						to='/'
+						style={{
+							textDecoration: 'none',
+							color: 'white',
+							padding: '8px',
+							height: 'min-content',
+						}}
+					>
+						{'<< Back To All Albums'}
+					</Link>
+				</div>
 				<Songs songs={currentAlbum.songs} />
 			</div>
 		);

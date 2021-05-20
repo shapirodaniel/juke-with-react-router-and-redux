@@ -1,46 +1,79 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { setCurrentSong } from '../redux/currentSong';
 
-const Songs = props => {
-	const { songs, toggleOne, currentSong, isPlaying } = props;
+const TableHeaders = () => {
+	const tdArray = ['', '#', 'Name', 'Artist', 'Genre'];
 
 	return (
-		<table id='songs'>
-			<tbody>
-				<tr className='gray'>
-					<td />
-					<td>#</td>
-					<td>Name</td>
-					<td>Artist</td>
-					<td>Genre</td>
-				</tr>
-				{songs &&
-					songs.map((song, idx) => {
-						const isCurrentlyPlaying = currentSong
-							? currentSong.id === song.id && isPlaying
-							: false;
-
-						return (
-							<tr key={song.id} className={isCurrentlyPlaying ? 'active' : ''}>
-								<td>
-									<i
-										className={
-											isCurrentlyPlaying
-												? 'fa fa-stop-circle'
-												: 'fa fa-play-circle'
-										}
-										onClick={() => toggleOne(song, songs)}
-									/>
-								</td>
-								<td>{idx + 1}</td>
-								<td>{song.name}</td>
-								<td>{song.artist.name}</td>
-								<td>{song.genre}</td>
-							</tr>
-						);
-					})}
-			</tbody>
-		</table>
+		<tr className='gray'>
+			{tdArray.map((td, idx) => (
+				<td key={idx}>{td}</td>
+			))}
+		</tr>
 	);
 };
 
-export default Songs;
+const SingleSong = ({
+	song,
+	trackNumber,
+	isCurrentlyPlaying,
+	setCurrentSong,
+}) => {
+	const { name, artist, genre } = song;
+
+	return (
+		<tr className={isCurrentlyPlaying ? 'active' : ''}>
+			<td>
+				<i
+					className={
+						isCurrentlyPlaying ? 'fa fa-stop-circle' : 'fa fa-play-circle'
+					}
+					onClick={() => setCurrentSong(song)}
+				/>
+			</td>
+			<td>{trackNumber}</td>
+			<td>{name}</td>
+			<td>{artist.name}</td>
+			<td>{genre}</td>
+		</tr>
+	);
+};
+class Songs extends React.Component {
+	render() {
+		const { songs, currentSong, setCurrentSong } = this.props;
+
+		return (
+			<table id='songs'>
+				<tbody>
+					<TableHeaders />
+					{songs &&
+						songs.map((song, songIdx) => {
+							const isCurrentlyPlaying =
+								currentSong && currentSong.id === song.id;
+
+							return (
+								<SingleSong
+									key={song.id}
+									song={song}
+									trackNumber={songIdx + 1}
+									isCurrentlyPlaying={isCurrentlyPlaying}
+									setCurrentSong={setCurrentSong}
+								/>
+							);
+						})}
+				</tbody>
+			</table>
+		);
+	}
+}
+
+const mapState = state => ({
+	currentSong: state.currentSong,
+});
+
+const mapDispatch = dispatch => ({
+	setCurrentSong: song => dispatch(setCurrentSong(song)),
+});
+
+export default connect(mapState, mapDispatch)(Songs);
