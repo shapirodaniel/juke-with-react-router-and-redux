@@ -4,24 +4,52 @@ import { setCurrentSong } from '../redux/currentSong';
 import { AUDIO, handlePlayerBtnClick } from '../AUDIO';
 
 class SingleSong extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			btnType: 'fa fa-play-circle',
+		};
+		this.toggleBtn = this.toggleBtn.bind(this);
+	}
+
+	toggleBtn() {
+		this.setState(state => {
+			const change =
+				state.btnType === 'fa fa-play-circle'
+					? 'fa fa-pause-circle'
+					: 'fa fa-play-circle';
+
+			return { btnType: change };
+		});
+	}
+
 	render() {
 		const { trackNumber, song, currentSong, setCurrentSong } = this.props;
 		const { name, artist, genre } = song;
 
+		const isSelected = () => currentSong.id === song.id;
+
+		const isActiveSong = () => isSelected() && !AUDIO.paused;
+
+		const getBtnClass = () => {
+			if (isActiveSong()) return 'fa fa-pause-circle';
+			else return 'fa fa-play-circle';
+		};
+
 		return (
-			// placeholder logic
-			<tr className={currentSong.id === song.id ? 'active' : ''}>
+			<tr className={isActiveSong() ? 'active' : ''}>
 				<td>
 					<i
-						// placeholder logic
-						className={
-							currentSong.id === song.id && !AUDIO.paused
-								? 'fa fa-pause-circle'
-								: 'fa fa-play-circle'
-						}
+						className={getBtnClass()}
 						onClick={() => {
-							setCurrentSong(song);
+							// only set song if not already selected
+							if (!isSelected()) setCurrentSong(song);
+
+							// toggle audio element status
 							handlePlayerBtnClick(song.audioUrl);
+
+							// toggle btn icon
+							this.toggleBtn();
 						}}
 					/>
 				</td>
