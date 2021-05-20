@@ -1,5 +1,5 @@
-export { default as Album } from './Album';
-export { default as AlbumsList } from './AlbumsList';
+export { default as AlbumCard } from './AlbumCard';
+export { default as AllAlbums } from './AllAlbums';
 export { default as Audio } from './Audio';
 export { default as Main } from './Main';
 export { default as Player } from './Player';

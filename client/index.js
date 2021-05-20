@@ -1,5 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Audio } from './components';
+import App from './App';
 
-ReactDOM.render(<Audio />, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('app'));

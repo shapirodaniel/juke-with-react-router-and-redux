@@ -1,11 +1,6 @@
-import React, { Component } from 'react';
-import { Main } from './';
-
-// creates the Audio element
-// While the Audio element is part of HTML5, it doesn't `visually` show up anywhere in the DOM.
-// However, we interact with it the same way we would a DOM node. That's pretty cool!
-
-const AUDIO = document.createElement('audio');
+import React from 'react';
+import { connect } from 'react-redux';
+import { audioStatuses, setAudioStatus } from '../redux/audioStatus';
 
 // Some utility functions
 
@@ -18,9 +13,27 @@ const skip = (interval, { currentSongList, currentSong }) => {
 	return [next, currentSongList];
 };
 
-// The stateful Audio component
+class Audio extends React.Component {
+	componentDidMount() {
+		this.props.loadAudioStatus();
+	}
 
-export default class Audio extends Component {
+	render() {
+		return <audio src={''} />;
+	}
+}
+
+const mapState = state => ({
+	audioStatus: state.audioStatus,
+});
+
+const mapDispatch = dispatch => ({
+	loadAudioStatus: () => dispatch(setAudioStatus(audioStatuses.STOPPED)),
+});
+
+export default connect(mapState, mapDispatch)(Audio);
+
+/* export default class Audio extends Component {
 	constructor() {
 		super();
 		this.state = {
@@ -96,4 +109,4 @@ export default class Audio extends Component {
 			/>
 		);
 	}
-}
+} */

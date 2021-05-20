@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Sidebar, SingleAlbum, AlbumsList, Player } from './';
+import { Sidebar, SingleAlbum, AllAlbums, Player } from './';
 
 export default class Main extends React.Component {
 	constructor() {
@@ -68,7 +68,7 @@ export default class Main extends React.Component {
 							currentSong={currentSong}
 						/>
 					) : (
-						<AlbumsList albums={this.state.albums} pickAlbum={this.pickAlbum} />
+						<AllAlbums albums={this.state.albums} pickAlbum={this.pickAlbum} />
 					)}
 				</div>
 				<Player prev={prev} next={next} toggle={toggle} isPlaying={isPlaying} />
