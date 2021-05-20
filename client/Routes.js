@@ -6,9 +6,8 @@ const Routes = () => {
 	return (
 		<Router>
 			<Switch>
-				<Route exact path='/albums' component={AllAlbums} />
+				<Route exact path={'/'} component={AllAlbums} />
 				<Route path='/albums/:id' component={SingleAlbum} />
-				<Route path='*' component={AllAlbums} />
 			</Switch>
 		</Router>
 	);

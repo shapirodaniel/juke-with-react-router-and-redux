@@ -13,28 +13,31 @@ const Songs = props => {
 					<td>Artist</td>
 					<td>Genre</td>
 				</tr>
-				{songs.map((song, idx) => {
-					const isCurrentlyPlaying = currentSong.id === song.id && isPlaying;
+				{songs &&
+					songs.map((song, idx) => {
+						const isCurrentlyPlaying = currentSong
+							? currentSong.id === song.id && isPlaying
+							: false;
 
-					return (
-						<tr key={song.id} className={isCurrentlyPlaying ? 'active' : ''}>
-							<td>
-								<i
-									className={
-										isCurrentlyPlaying
-											? 'fa fa-stop-circle'
-											: 'fa fa-play-circle'
-									}
-									onClick={() => toggleOne(song, songs)}
-								/>
-							</td>
-							<td>{idx + 1}</td>
-							<td>{song.name}</td>
-							<td>{song.artist.name}</td>
-							<td>{song.genre}</td>
-						</tr>
-					);
-				})}
+						return (
+							<tr key={song.id} className={isCurrentlyPlaying ? 'active' : ''}>
+								<td>
+									<i
+										className={
+											isCurrentlyPlaying
+												? 'fa fa-stop-circle'
+												: 'fa fa-play-circle'
+										}
+										onClick={() => toggleOne(song, songs)}
+									/>
+								</td>
+								<td>{idx + 1}</td>
+								<td>{song.name}</td>
+								<td>{song.artist.name}</td>
+								<td>{song.genre}</td>
+							</tr>
+						);
+					})}
 			</tbody>
 		</table>
 	);

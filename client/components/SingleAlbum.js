@@ -1,41 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setCurrentAlbum } from '../redux/currentAlbum';
-import { Album, Songs } from './';
+import { fetchCurrentAlbum } from '../redux/currentAlbum';
+import { AlbumCard, Songs } from './';
 
 class SingleAlbum extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
 	componentDidMount() {
+		console.log(this.props);
 		this.props.loadCurrentAlbum(this.props.match.params.id);
 	}
 
 	render() {
-		const { currentAlbum, toggleOne, isPlaying, currentSong } = props;
+		const { currentAlbum } = this.props || {};
 
 		return (
 			<div id='single-album' className='column'>
-				<Album album={currentAlbum} />
-				<Songs
-					songs={album.songs}
-					toggleOne={toggleOne}
-					isPlaying={isPlaying}
-					currentSong={currentSong}
-				/>
+				<AlbumCard album={currentAlbum} />
+				<Songs songs={currentAlbum.songs} />
 			</div>
 		);
 	}
 }
 
 const mapState = state => ({
-	albums: state.albums,
 	currentAlbum: state.currentAlbum,
 });
 
 const mapDispatch = dispatch => ({
-	loadCurrentAlbum: album => dispatch(setCurrentAlbum(album)),
+	loadCurrentAlbum: albumId => dispatch(fetchCurrentAlbum(albumId)),
 });
 
 export default connect(mapState, mapDispatch)(SingleAlbum);
