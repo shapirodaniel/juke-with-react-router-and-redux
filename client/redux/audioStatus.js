@@ -5,12 +5,10 @@ const SET_AUDIO_STATUS = 'SET_AUDIO_STATUS';
 // otherwise: PLAYING | PAUSED | STOPPED
 const PLAYING = 'PLAYING';
 const PAUSED = 'PAUSED';
-const STOPPED = 'STOPPED';
 
 export const audioStatuses = {
 	PLAYING,
 	PAUSED,
-	STOPPED,
 };
 
 export const setAudioStatus = status => ({
@@ -18,7 +16,7 @@ export const setAudioStatus = status => ({
 	payload: status,
 });
 
-const initState = STOPPED;
+const initState = PAUSED;
 
 export default (state = initState, { type, payload }) => {
 	switch (type) {

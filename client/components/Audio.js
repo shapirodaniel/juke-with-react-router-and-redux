@@ -28,7 +28,7 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-	loadAudioStatus: () => dispatch(setAudioStatus(audioStatuses.STOPPED)),
+	loadAudioStatus: () => dispatch(setAudioStatus(audioStatuses.PAUSED)),
 });
 
 export default connect(mapState, mapDispatch)(Audio);
