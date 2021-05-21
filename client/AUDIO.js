@@ -6,10 +6,9 @@ const setAudioSrc = src => {
 	if (src) AUDIO.src = src;
 };
 
-// important!
-// AUDIO.play() returns a Promise
-// so we async/await it here to avoid
-// uncaught DOM exception interrupted playback by load cmd
+// important! AUDIO.play() returns a Promise
+// so we async/await it here to avoid an uncaught DOM exception error
+// that results from trying to play a source that hasn't loaded yet
 const playAudio = async () => {
 	if (AUDIO.src) await AUDIO.play();
 };
@@ -20,19 +19,9 @@ const pauseAudio = () => {
 
 // click handler for audio playback/pause
 export const handlePlayerBtnClick = newSrc => {
-	// if audio doesn't have an src yet
-	// or the current src doesn't equal the one passed
-	// set it
 	if (!AUDIO.src || AUDIO.src !== newSrc) {
 		setAudioSrc(newSrc);
 	}
-
-	// check if playing on audio element "paused" attr
-	if (!AUDIO.paused) {
-		pauseAudio();
-	} else {
-		playAudio();
-	}
-
+	AUDIO.paused ? playAudio() : pauseAudio();
 	return AUDIO.paused;
 };

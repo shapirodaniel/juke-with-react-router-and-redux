@@ -43,33 +43,38 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-	// if previousIndex reaches 0
-	// wrap around to last song
 	setPreviousSong: (currentAlbum, currentSong) => {
-		console.log(
-			currentAlbum.songs.findIndex(song => song.id === currentSong.id)
-		);
+		// early return if currentAlbum undefined
+		// user has refreshed or navigated directly to all albums view
+		if (!currentAlbum.songs) return;
 
-		const previousIndex =
-			currentAlbum.songs.findIndex(song => song.id === currentSong.id) - 1 ===
-			-1
-				? currentAlbum.songs.length - 1
-				: currentAlbum.songs.findIndex(song => song.id === currentSong.id) - 1;
+		let previousIndex =
+			currentAlbum.songs.findIndex(song => song.id === currentSong.id) - 1;
+
+		if (previousIndex < 0) {
+			previousIndex = currentAlbum.songs.length - 1;
+		}
+
 		const previousSong = currentAlbum.songs[previousIndex];
+
 		dispatch(setCurrentSong(previousSong));
 		const status = handlePlayerBtnClick(previousSong.audioUrl);
 		dispatch(isPaused(status));
 	},
 
 	setNextSong: (currentAlbum, currentSong) => {
-		// if nextIndex exceeds album length
-		// wrap around to first song
-		const nextIndex =
-			currentAlbum.songs.findIndex(song => song.id === currentSong.id) + 1 ===
-			currentAlbum.songs.length
-				? 0
-				: currentAlbum.songs.findIndex(song => song.id === currentSong.id) + 1;
+		// see setPreviousSong
+		if (!currentAlbum.songs) return;
+
+		let nextIndex =
+			currentAlbum.songs.findIndex(song => song.id === currentSong.id) + 1;
+
+		if (nextIndex === currentAlbum.songs.length) {
+			nextIndex = 0;
+		}
+
 		const nextSong = currentAlbum.songs[nextIndex];
+
 		dispatch(setCurrentSong(nextSong));
 		const status = handlePlayerBtnClick(nextSong.audioUrl);
 		dispatch(isPaused(status));
