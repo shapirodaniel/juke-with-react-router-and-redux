@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { setCurrentSong } from '../redux/currentSong';
-import { AUDIO, handlePlayerBtnClick } from '../AUDIO';
+import { handlePlayerBtnClick } from '../AUDIO';
 
 class PlayPauseBtn extends React.Component {
 	constructor(props) {
@@ -13,6 +13,9 @@ class PlayPauseBtn extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
+		// first if-check keeps us from re-toggling the clicked btn
+		if (!prevProps.currentSong.id) return;
+		// second if-check sets icons for the other btns after clicked btn is toggled
 		if (prevProps.currentSong.id !== this.props.currentSong.id) {
 			const { currentSong, song } = this.props;
 			this.toggleIcon(currentSong, song);
