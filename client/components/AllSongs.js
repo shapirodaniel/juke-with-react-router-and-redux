@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { setCurrentSong } from '../redux/currentSong';
 import SingleSong from './SingleSong';
 
 const AllSongs = ({ songs }) => (
@@ -21,12 +19,4 @@ const AllSongs = ({ songs }) => (
 	</table>
 );
 
-const mapState = state => ({
-	currentSong: state.currentSong,
-});
-
-const mapDispatch = dispatch => ({
-	setCurrentSong: song => dispatch(setCurrentSong(song)),
-});
-
-export default connect(mapState, mapDispatch)(AllSongs);
+export default AllSongs;
