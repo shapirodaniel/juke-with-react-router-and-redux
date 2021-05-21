@@ -24,12 +24,12 @@ class Player extends React.Component {
 		return (
 			<div id='player-container'>
 				<div id='player-controls'>
-					<div id='current-album' style={{ display: 'flex' }}>
-						<img
-							src={currentAlbum.artworkUrl}
-							style={{ height: '40px', width: 'auto' }}
-						/>
-						<span>{currentAlbum.name}</span>
+					<div id='current-album'>
+						<img src={currentAlbum.artworkUrl} />
+						<span>
+							{currentAlbum.name} |{' '}
+							{currentAlbum.artist && currentAlbum.artist.name}
+						</span>
 					</div>
 					<div className='row center'>
 						<i
@@ -46,7 +46,10 @@ class Player extends React.Component {
 						/>
 					</div>
 					{/* AUDIO's ontimeupdate fn will populate this div */}
-					<div id='track-time'></div>
+					<div id='track-name-and-time'>
+						<span id='track-name'>{currentSong.name}</span>
+						<span id='track-time'></span>
+					</div>
 				</div>
 			</div>
 		);

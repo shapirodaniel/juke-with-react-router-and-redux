@@ -92,9 +92,11 @@ td {
 	bottom: 0;
 }
 
+/* grid allows us to maintain a fixed size and position for the player controls, and let the left, right divs take up the remaining space equally -- this will allow us to flex and center their content */
 #player-controls {
-	display: flex;
-	justify-content: space-between;
+	display: grid;
+	grid-template-areas: 'albumInfo controls nameAndTiming';
+	grid-template-columns: 1fr 192px 1fr;
 	background-color: #333;
 	box-shadow: 0px -2px 2px #5a5a5a;
 	height: 100%;
@@ -112,6 +114,24 @@ td {
 
 #player-controls i:nth-child(2) {
 	font-size: 3em;
+}
+
+#current-album,
+#track-name-and-time {
+	display: flex;
+	justify-content: center;
+	font-size: 13px;
+	padding: 0 0.5em;
+}
+
+#current-album img {
+	height: 40px;
+	width: auto;
+}
+
+#track-name,
+#current-album img {
+	margin-right: 1em;
 }
 
 /* Sidebar */

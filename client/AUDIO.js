@@ -20,6 +20,7 @@ const formatTime = timeInSeconds => {
 AUDIO.ontimeupdate = function () {
 	const currentPosition = formatTime(Math.floor(this.currentTime));
 	const totalTime = formatTime(Math.floor(this.duration));
+
 	// if-check guards against NaN:NaN totalTime before song has loaded
 	if (!isNaN(this.duration)) {
 		document.getElementById(
