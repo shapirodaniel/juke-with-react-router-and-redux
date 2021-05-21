@@ -1,37 +1,31 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { fetchCurrentAlbum } from '../redux/currentAlbum';
 import { AlbumCard, AllSongs } from './';
 
-class SingleAlbum extends React.Component {
-	componentDidMount() {
-		this.props.loadCurrentAlbum(this.props.match.params.id);
-	}
+const SingleAlbum = () => {
+	const { id } = useParams();
 
-	render() {
-		const { currentAlbum } = this.props || {};
+	const dispatch = useDispatch();
 
-		return (
-			<div id='single-album' className='column'>
-				<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-					<AlbumCard album={currentAlbum} />
-					<Link to='/'>
-						<div className='backBtn'>{'<< Back To All Albums'}</div>
-					</Link>
-				</div>
-				<AllSongs songs={currentAlbum.songs} />
+	useEffect(() => {
+		dispatch(fetchCurrentAlbum(id));
+	}, []);
+
+	const currentAlbum = useSelector(state => state.currentAlbum);
+
+	return (
+		<div id='single-album' className='column'>
+			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+				<AlbumCard album={currentAlbum} />
+				<Link to='/'>
+					<div className='backBtn'>{'<< Back To All Albums'}</div>
+				</Link>
 			</div>
-		);
-	}
-}
+			<AllSongs songs={currentAlbum.songs} />
+		</div>
+	);
+};
 
-const mapState = state => ({
-	currentAlbum: state.currentAlbum,
-});
-
-const mapDispatch = dispatch => ({
-	loadCurrentAlbum: albumId => dispatch(fetchCurrentAlbum(albumId)),
-});
-
-export default connect(mapState, mapDispatch)(SingleAlbum);
+export default SingleAlbum;
