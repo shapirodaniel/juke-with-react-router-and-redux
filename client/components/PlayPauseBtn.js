@@ -3,11 +3,14 @@ import { connect } from 'react-redux';
 import { setCurrentSong } from '../redux/currentSong';
 import { handlePlayerBtnClick } from '../AUDIO';
 
+const playIcon = 'fa fa-play-circle';
+const pauseIcon = 'fa fa-pause-circle';
+
 class PlayPauseBtn extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			btnIcon: 'fa fa-play-circle',
+			btnIcon: playIcon,
 		};
 		this.toggleIcon = this.toggleIcon.bind(this);
 	}
@@ -25,13 +28,10 @@ class PlayPauseBtn extends React.Component {
 	toggleIcon(currentSong, song) {
 		if (!currentSong.id || currentSong.id === song.id) {
 			this.setState(state => ({
-				btnIcon:
-					state.btnIcon === 'fa fa-play-circle'
-						? 'fa fa-pause-circle'
-						: 'fa fa-play-circle',
+				btnIcon: state.btnIcon === playIcon ? pauseIcon : playIcon,
 			}));
 		} else {
-			this.setState({ btnIcon: 'fa fa-play-circle' });
+			this.setState({ btnIcon: playIcon });
 		}
 	}
 

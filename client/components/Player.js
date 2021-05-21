@@ -8,14 +8,41 @@ const forwardIcon = 'fa fa-step-forward';
 const playIcon = 'fa fa-play-circle';
 const pauseIcon = 'fa fa-pause-circle';
 class Player extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			btnIcon: playIcon,
+		};
+	}
+
+	componentDidUpdate(_, prevState) {
+		if (
+			(prevState.btnIcon === playIcon && !AUDIO.paused) ||
+			(prevState.btnIcon === pauseIcon && AUDIO.paused)
+		) {
+			this.setState({
+				btnIcon: prevState.btnIcon === playIcon ? pauseIcon : playIcon,
+			});
+		}
+	}
+
 	render() {
+		const { currentAlbum, currentSong } = this.props;
+
 		return (
 			<div id='player-container'>
 				<div id='player-controls'>
 					<div className='row center'>
 						<i className={backIcon} />
-						{/* // placeholder logic */}
-						<i className={true ? pauseIcon : playIcon} />
+						<i
+							className={this.state.btnIcon}
+							onClick={() => {
+								handlePlayerBtnClick(currentSong.audioUrl);
+								this.setState({
+									btnIcon: !AUDIO.paused ? pauseIcon : playIcon,
+								});
+							}}
+						/>
 						<i className={forwardIcon} />
 					</div>
 				</div>
@@ -25,6 +52,7 @@ class Player extends React.Component {
 }
 
 const mapState = state => ({
+	currentAlbum: state.currentAlbum,
 	currentSong: state.currentSong,
 });
 
