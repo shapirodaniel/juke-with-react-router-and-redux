@@ -14,6 +14,7 @@ class SingleSong extends React.Component {
 		return (
 			<tr className={isActiveSong ? 'active' : ''}>
 				<td>
+					{/* song prop used to compare against currentSong and conditionally render single song play/pause btn icons */}
 					<PlayPauseBtn song={song} />
 				</td>
 				<td>{trackNumber}</td>

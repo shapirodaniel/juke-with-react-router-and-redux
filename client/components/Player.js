@@ -1,41 +1,35 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AUDIO, handlePlayerBtnClick } from '../AUDIO';
+import { setCurrentSong } from '../redux/currentSong';
 import { isPaused } from '../redux/isPaused';
+import { handlePlayerBtnClick } from '../AUDIO';
+import PlayPauseBtn from './PlayPauseBtn';
 
 // btn classNames
 const backIcon = 'fa fa-step-backward';
 const forwardIcon = 'fa fa-step-forward';
-const playIcon = 'fa fa-play-circle';
-const pauseIcon = 'fa fa-pause-circle';
 
-const isPlaying = () => !AUDIO.paused;
 class Player extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			btnIcon: playIcon,
-		};
-	}
-
 	render() {
-		const { currentAlbum, currentSong, isPaused, setPaused } = this.props;
-
-		console.log(isPaused);
+		const { currentAlbum, currentSong, setPreviousSong, setNextSong } =
+			this.props;
 
 		return (
 			<div id='player-container'>
 				<div id='player-controls'>
 					<div className='row center'>
-						<i className={backIcon} />
 						<i
-							className={isPaused ? playIcon : pauseIcon}
+							className={backIcon}
 							onClick={() => {
-								const status = handlePlayerBtnClick(currentSong.audioUrl);
-								setPaused(status);
+								setPreviousSong(currentAlbum, currentSong);
 							}}
 						/>
-						<i className={forwardIcon} />
+						{/* play/pause btn requires a song prop, which is used to conditionally render the btn icon -- by passing currentSong here, we are asserting that this play/pause btn will always be the active one for any play/pause action */}
+						<PlayPauseBtn song={currentSong} />
+						<i
+							className={forwardIcon}
+							onClick={() => setNextSong(currentAlbum, currentSong)}
+						/>
 					</div>
 				</div>
 			</div>
@@ -46,32 +40,40 @@ class Player extends React.Component {
 const mapState = state => ({
 	currentAlbum: state.currentAlbum,
 	currentSong: state.currentSong,
-	isPaused: state.isPaused,
 });
 
 const mapDispatch = dispatch => ({
 	// if previousIndex reaches 0
 	// wrap around to last song
 	setPreviousSong: (currentAlbum, currentSong) => {
+		console.log(
+			currentAlbum.songs.findIndex(song => song.id === currentSong.id)
+		);
+
 		const previousIndex =
-			currentAlbum.songs.findIndex(currentSong) - 1 || songs.length - 1;
-		const previousSong = currentAlbums.songs[previousIndex];
+			currentAlbum.songs.findIndex(song => song.id === currentSong.id) - 1 ===
+			-1
+				? currentAlbum.songs.length - 1
+				: currentAlbum.songs.findIndex(song => song.id === currentSong.id) - 1;
+		const previousSong = currentAlbum.songs[previousIndex];
 		dispatch(setCurrentSong(previousSong));
+		const status = handlePlayerBtnClick(previousSong.audioUrl);
+		dispatch(isPaused(status));
 	},
 
 	setNextSong: (currentAlbum, currentSong) => {
 		// if nextIndex exceeds album length
 		// wrap around to first song
 		const nextIndex =
-			currentAlbum.songs.findIndex(currentSong) + 1 ===
+			currentAlbum.songs.findIndex(song => song.id === currentSong.id) + 1 ===
 			currentAlbum.songs.length
-				? currentAlbum.songs[0]
-				: currentAlbum.songs.findIndex(currentSong) + 1;
-		const nextSong = currentAlbums.songs[nextIndex];
+				? 0
+				: currentAlbum.songs.findIndex(song => song.id === currentSong.id) + 1;
+		const nextSong = currentAlbum.songs[nextIndex];
 		dispatch(setCurrentSong(nextSong));
+		const status = handlePlayerBtnClick(nextSong.audioUrl);
+		dispatch(isPaused(status));
 	},
-
-	setPaused: status => dispatch(isPaused(status)),
 });
 
 export default connect(mapState, mapDispatch)(Player);

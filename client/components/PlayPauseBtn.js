@@ -8,13 +8,6 @@ const playIcon = 'fa fa-play-circle';
 const pauseIcon = 'fa fa-pause-circle';
 
 class PlayPauseBtn extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			btnIcon: playIcon,
-		};
-	}
-
 	render() {
 		const { song, currentSong, setCurrentSong, isPaused, setPaused } =
 			this.props;
