@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { setCurrentSong } from '../redux/currentSong';
 import { isPaused } from '../redux/isPaused';
-import { handlePlayerBtnClick } from '../AUDIO';
+import { AUDIO, handlePlayerBtnClick } from '../AUDIO';
 import PlayPauseBtn from './PlayPauseBtn';
 
 // btn classNames
@@ -10,6 +10,13 @@ const backIcon = 'fa fa-step-backward';
 const forwardIcon = 'fa fa-step-forward';
 
 class Player extends React.Component {
+	/* 	constructor(props) {
+		super(props);
+		this.state = {
+			lastAlbum: this.props.currentAlbum || {},
+		};
+	} */
+
 	render() {
 		const { currentAlbum, currentSong, setPreviousSong, setNextSong } =
 			this.props;
@@ -17,6 +24,13 @@ class Player extends React.Component {
 		return (
 			<div id='player-container'>
 				<div id='player-controls'>
+					<div id='current-album' style={{ display: 'flex' }}>
+						<img
+							src={currentAlbum.artworkUrl}
+							style={{ height: '40px', width: 'auto' }}
+						/>
+						<span>{currentAlbum.name}</span>
+					</div>
 					<div className='row center'>
 						<i
 							className={backIcon}
@@ -31,6 +45,8 @@ class Player extends React.Component {
 							onClick={() => setNextSong(currentAlbum, currentSong)}
 						/>
 					</div>
+					{/* AUDIO's ontimeupdate fn will populate this div */}
+					<div id='track-time'></div>
 				</div>
 			</div>
 		);
@@ -41,6 +57,8 @@ const mapState = state => ({
 	currentAlbum: state.currentAlbum,
 	currentSong: state.currentSong,
 });
+
+// seek logic: if user navigates to a new album, seeking will automatically start at track 1 of the new album
 
 const mapDispatch = dispatch => ({
 	setPreviousSong: (currentAlbum, currentSong) => {
