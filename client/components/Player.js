@@ -20,7 +20,8 @@ const Player = ({
 			<div id='current-album'>
 				<img src={currentAlbum.artworkUrl} />
 				<span>
-					{currentAlbum.name} |{' '}
+					{currentAlbum.name}
+					{currentAlbum.name && ' | '}
 					{currentAlbum.artist && currentAlbum.artist.name}
 				</span>
 			</div>
