@@ -10,13 +10,6 @@ const backIcon = 'fa fa-step-backward';
 const forwardIcon = 'fa fa-step-forward';
 
 class Player extends React.Component {
-	/* 	constructor(props) {
-		super(props);
-		this.state = {
-			lastAlbum: this.props.currentAlbum || {},
-		};
-	} */
-
 	render() {
 		const { currentAlbum, currentSong, setPreviousSong, setNextSong } =
 			this.props;
