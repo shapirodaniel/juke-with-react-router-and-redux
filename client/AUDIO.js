@@ -33,4 +33,6 @@ export const handlePlayerBtnClick = newSrc => {
 	} else {
 		playAudio();
 	}
+
+	return AUDIO.paused;
 };
