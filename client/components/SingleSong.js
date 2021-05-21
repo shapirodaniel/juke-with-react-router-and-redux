@@ -1,9 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AUDIO } from '../AUDIO';
 import PlayPauseBtn from './PlayPauseBtn';
 
-const SingleSong = ({ trackNumber, song, currentSong }) => {
+const SingleSong = ({ trackNumber, song }) => {
+	const currentSong = useSelector(state => state.currentSong);
+
 	const { name, artist, genre } = song;
 
 	const isSelected = !currentSong.id || currentSong.id === song.id;
@@ -23,8 +25,4 @@ const SingleSong = ({ trackNumber, song, currentSong }) => {
 	);
 };
 
-const mapState = state => ({
-	currentSong: state.currentSong,
-});
-
-export default connect(mapState)(SingleSong);
+export default SingleSong;
