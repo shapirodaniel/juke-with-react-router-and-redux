@@ -2,9 +2,11 @@
 export const AUDIO = document.createElement('audio');
 
 const formatTime = timeInSeconds => {
+	// if-check returns formatted time under 60 seconds
 	if (timeInSeconds < 60)
 		return `0:${timeInSeconds < 10 ? `0${timeInSeconds}` : timeInSeconds}`;
 
+	// else we calculate minutes:seconds
 	const minutes = Math.floor(timeInSeconds / 60);
 	const remainingSeconds = Math.floor(timeInSeconds - minutes * 60);
 
@@ -18,14 +20,12 @@ const formatTime = timeInSeconds => {
 AUDIO.ontimeupdate = function () {
 	const currentPosition = formatTime(Math.floor(this.currentTime));
 	const totalTime = formatTime(Math.floor(this.duration));
-
-	console.log(currentPosition, totalTime);
-
-	// if-check guards against NaN before track has loaded
-	if (!isNaN(totalTime))
+	// if-check guards against NaN:NaN totalTime before song has loaded
+	if (!isNaN(this.duration)) {
 		document.getElementById(
 			'track-time'
 		).innerText = `${currentPosition} / ${totalTime}`;
+	}
 };
 
 // helpers
