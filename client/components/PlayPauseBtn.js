@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { setCurrentSong } from '../redux/currentSong';
+import { isPaused } from '../redux/isPaused';
 import { handlePlayerBtnClick } from '../AUDIO';
 
 const playIcon = 'fa fa-play-circle';
@@ -36,13 +37,14 @@ class PlayPauseBtn extends React.Component {
 	}
 
 	render() {
-		const { song, currentSong, setCurrentSong } = this.props;
+		const { song, currentSong, setCurrentSong, setPaused } = this.props;
 		const { toggleIcon } = this;
 
 		const handleClick = () => {
 			setCurrentSong(song);
-			handlePlayerBtnClick(song.audioUrl);
+			const status = handlePlayerBtnClick(song.audioUrl);
 			toggleIcon(currentSong, song);
+			setPaused(status);
 		};
 
 		return <i className={this.state.btnIcon} onClick={handleClick} />;
@@ -55,6 +57,7 @@ const mapState = state => ({
 
 const mapDispatch = dispatch => ({
 	setCurrentSong: song => dispatch(setCurrentSong(song)),
+	setPaused: status => dispatch(isPaused(status)),
 });
 
 export default connect(mapState, mapDispatch)(PlayPauseBtn);

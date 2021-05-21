@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AUDIO, handlePlayerBtnClick } from '../AUDIO';
+import { isPaused } from '../redux/isPaused';
 
 // btn classNames
 const backIcon = 'fa fa-step-backward';
@@ -18,7 +19,9 @@ class Player extends React.Component {
 	}
 
 	render() {
-		const { currentAlbum, currentSong } = this.props;
+		const { currentAlbum, currentSong, isPaused, setPaused } = this.props;
+
+		console.log(isPaused);
 
 		return (
 			<div id='player-container'>
@@ -26,13 +29,10 @@ class Player extends React.Component {
 					<div className='row center'>
 						<i className={backIcon} />
 						<i
-							className={this.state.btnIcon}
+							className={isPaused ? playIcon : pauseIcon}
 							onClick={() => {
-								const isPaused = handlePlayerBtnClick(currentSong.audioUrl);
-
-								this.setState({
-									btnIcon: isPaused ? playIcon : pauseIcon,
-								});
+								const status = handlePlayerBtnClick(currentSong.audioUrl);
+								setPaused(status);
 							}}
 						/>
 						<i className={forwardIcon} />
@@ -46,6 +46,7 @@ class Player extends React.Component {
 const mapState = state => ({
 	currentAlbum: state.currentAlbum,
 	currentSong: state.currentSong,
+	isPaused: state.isPaused,
 });
 
 const mapDispatch = dispatch => ({
@@ -69,6 +70,8 @@ const mapDispatch = dispatch => ({
 		const nextSong = currentAlbums.songs[nextIndex];
 		dispatch(setCurrentSong(nextSong));
 	},
+
+	setPaused: status => dispatch(isPaused(status)),
 });
 
 export default connect(mapState, mapDispatch)(Player);
