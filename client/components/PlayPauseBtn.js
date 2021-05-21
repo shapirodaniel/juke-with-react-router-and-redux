@@ -7,27 +7,26 @@ import { handlePlayerBtnClick } from '../AUDIO';
 const playIcon = 'fa fa-play-circle';
 const pauseIcon = 'fa fa-pause-circle';
 
-class PlayPauseBtn extends React.Component {
-	render() {
-		const { song, currentSong, setCurrentSong, isPaused, setPaused } =
-			this.props;
+const PlayPauseBtn = ({
+	song,
+	currentSong,
+	setCurrentSong,
+	isPaused,
+	setPaused,
+}) => {
+	const handleClick = () => {
+		setCurrentSong(song);
+		const status = handlePlayerBtnClick(song.audioUrl);
+		setPaused(status);
+	};
 
-		const handleClick = () => {
-			setCurrentSong(song);
-			const status = handlePlayerBtnClick(song.audioUrl);
-			setPaused(status);
-		};
-
-		return (
-			<i
-				className={
-					song.id === currentSong.id && !isPaused ? pauseIcon : playIcon
-				}
-				onClick={handleClick}
-			/>
-		);
-	}
-}
+	return (
+		<i
+			className={song.id === currentSong.id && !isPaused ? pauseIcon : playIcon}
+			onClick={handleClick}
+		/>
+	);
+};
 
 const mapState = state => ({
 	currentSong: state.currentSong,
