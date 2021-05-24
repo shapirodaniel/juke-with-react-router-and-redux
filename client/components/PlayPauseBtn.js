@@ -1,23 +1,24 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentSong } from '../redux/currentSong';
-import { isPaused } from '../redux/isPaused';
-import { handlePlayerBtnClick } from '../AUDIO';
+import { setPaused } from '../redux/audio';
+import { handlePlayerBtnClick } from './Audio';
 
 const playIcon = 'fa fa-play-circle';
 const pauseIcon = 'fa fa-pause-circle';
 
-const PlayPauseBtn = ({
-	song,
-	currentSong,
-	setCurrentSong,
-	isPaused,
-	setPaused,
-}) => {
+const PlayPauseBtn = ({ song }) => {
+	const currentSong = useSelector(state => state.currentSong);
+	const isPaused = useSelector(state => state.audio.isPaused);
+
+	const dispatch = useDispatch();
+	const updateCurrentSong = thisSong => dispatch(setCurrentSong(thisSong));
+	const updatePaused = status => dispatch(setPaused(status));
+
 	const handleClick = () => {
-		setCurrentSong(song);
+		updateCurrentSong(song);
 		const status = handlePlayerBtnClick(song.audioUrl);
-		setPaused(status);
+		updatePaused(status);
 	};
 
 	return (
@@ -28,14 +29,4 @@ const PlayPauseBtn = ({
 	);
 };
 
-const mapState = state => ({
-	currentSong: state.currentSong,
-	isPaused: state.isPaused,
-});
-
-const mapDispatch = dispatch => ({
-	setCurrentSong: song => dispatch(setCurrentSong(song)),
-	setPaused: status => dispatch(isPaused(status)),
-});
-
-export default connect(mapState, mapDispatch)(PlayPauseBtn);
+export default PlayPauseBtn;

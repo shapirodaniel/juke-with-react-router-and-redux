@@ -1,15 +1,17 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { AUDIO } from '../AUDIO';
 import PlayPauseBtn from './PlayPauseBtn';
 
 const SingleSong = ({ trackNumber, song }) => {
 	const currentSong = useSelector(state => state.currentSong);
+	const isPaused = useSelector(state => state.audio.isPaused);
 
 	const { name, artist, genre } = song;
 
 	const isSelected = !currentSong.id || currentSong.id === song.id;
-	const isActiveSong = isSelected && !AUDIO.paused;
+
+	// pass down status of audio somehow here?
+	const isActiveSong = isSelected && !isPaused;
 
 	return (
 		<tr className={isActiveSong ? 'active' : ''}>
