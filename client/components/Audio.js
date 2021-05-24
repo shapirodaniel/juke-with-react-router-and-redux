@@ -1,43 +1,14 @@
 import React, { useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateTrackTime, setAudioRef } from '../redux/audio';
+import { formatTime, setAudioSrc, playAudio, pauseAudio } from './audioHelpers';
 
-const formatTime = timeInSeconds => {
-	// if-check returns formatted time under 60 seconds
-	if (timeInSeconds < 60)
-		return `0:${timeInSeconds < 10 ? `0${timeInSeconds}` : timeInSeconds}`;
-
-	// else we calculate minutes:seconds
-	const minutes = Math.floor(timeInSeconds / 60);
-	const remainingSeconds = Math.floor(timeInSeconds - minutes * 60);
-
-	return `${minutes}:${
-		remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds
-	}`;
-};
-
-// helpers
-const setAudioSrc = (src, audioRef) => {
-	if (src) audioRef.current.src = src;
-};
-
-// important! audioRef.play() returns a Promise
-// so we async/await it here to avoid an uncaught DOM exception error
-// that results from trying to play a source that hasn't loaded yet
-const playAudio = async audioRef => {
-	if (audioRef.current.src) await audioRef.current.play();
-};
-
-const pauseAudio = audioRef => {
-	if (audioRef.current.src) audioRef.current.pause();
-};
-
-// click handler for audio playback/pause
-export const handlePlayerBtnClick = (newSrc, audioRef) => {
+// click handler for audio playback/pause, used by PlayPauseBtn, SingleSong
+export const handlePlayerBtnClick = (audioRef, newSrc) => {
 	if (!audioRef.current.src || audioRef.current.src !== newSrc) {
-		setAudioSrc(newSrc);
+		setAudioSrc(audioRef, newSrc);
 	}
-	audioRef.current.paused ? playAudio() : pauseAudio();
+	audioRef.current.paused ? playAudio(audioRef) : pauseAudio(audioRef);
 };
 
 const Audio = () => {
@@ -46,7 +17,7 @@ const Audio = () => {
 
 	useEffect(() => {
 		dispatch(setAudioRef(audioRef));
-	}, [audioRef.current]);
+	}, []);
 
 	const handleTimeUpdate = () => {
 		const currentPosition = formatTime(

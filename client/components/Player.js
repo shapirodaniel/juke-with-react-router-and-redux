@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentSong } from '../redux/currentSong';
-import { setPaused } from '../redux/audio';
 import { handlePlayerBtnClick } from './Audio';
 import PlayPauseBtn from './PlayPauseBtn';
 
@@ -10,9 +9,7 @@ const backIcon = 'fa fa-step-backward';
 const forwardIcon = 'fa fa-step-forward';
 
 // functions for song navigation
-const setPreviousSong = (currentAlbum, currentSong, dispatch) => {
-	// early return if currentAlbum undefined
-	// user has refreshed or navigated directly to all albums view
+const setPreviousSong = (currentAlbum, currentSong, audioRef, dispatch) => {
 	if (!currentAlbum.songs) return;
 
 	let previousIndex =
@@ -25,12 +22,10 @@ const setPreviousSong = (currentAlbum, currentSong, dispatch) => {
 	const previousSong = currentAlbum.songs[previousIndex];
 
 	dispatch(setCurrentSong(previousSong));
-	const status = handlePlayerBtnClick(previousSong.audioUrl);
-	dispatch(setPaused(status));
+	handlePlayerBtnClick(audioRef, previousSong.audioUrl);
 };
 
-const setNextSong = (currentAlbum, currentSong, dispatch) => {
-	// see setPreviousSong
+const setNextSong = (currentAlbum, currentSong, audioRef, dispatch) => {
 	if (!currentAlbum.songs) return;
 
 	let nextIndex =
@@ -43,14 +38,14 @@ const setNextSong = (currentAlbum, currentSong, dispatch) => {
 	const nextSong = currentAlbum.songs[nextIndex];
 
 	dispatch(setCurrentSong(nextSong));
-	const status = handlePlayerBtnClick(nextSong.audioUrl);
-	dispatch(setPaused(status));
+	handlePlayerBtnClick(audioRef, nextSong.audioUrl);
 };
 
 const Player = () => {
+	const audioRef = useSelector(state => state.audio.audioRef);
 	const trackTime = useSelector(state => state.audio.trackTime);
-	const currentAlbum = useSelector(state => state.currentAlbum),
-	const currentSong = useSelector(state => state.currentSong),
+	const currentAlbum = useSelector(state => state.currentAlbum);
+	const currentSong = useSelector(state => state.currentSong);
 	const dispatch = useDispatch();
 
 	return (
@@ -68,14 +63,16 @@ const Player = () => {
 					<i
 						className={backIcon}
 						onClick={() => {
-							setPreviousSong(currentAlbum, currentSong, dispatch);
+							setPreviousSong(currentAlbum, currentSong, audioRef, dispatch);
 						}}
 					/>
 					{/* play/pause btn requires a song prop, which is used to conditionally render the btn icon -- by passing currentSong here, we are asserting that this play/pause btn will always be the active one for any play/pause action */}
 					<PlayPauseBtn song={currentSong} />
 					<i
 						className={forwardIcon}
-						onClick={() => setNextSong(currentAlbum, currentSong, dispatch)}
+						onClick={() =>
+							setNextSong(currentAlbum, currentSong, audioRef, dispatch)
+						}
 					/>
 				</div>
 				{/* audioRef's onTimeUpdate event handler makes trackTime available on the redux store's audio object */}
@@ -88,4 +85,4 @@ const Player = () => {
 	);
 };
 
-export default Player
+export default Player;
