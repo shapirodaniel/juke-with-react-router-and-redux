@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentSong } from '../redux/currentSong';
+import { setPaused } from '../redux/audio';
 import { handlePlayerBtnClick } from './Audio';
 import PlayPauseBtn from './PlayPauseBtn';
 
@@ -23,6 +24,7 @@ const setPreviousSong = (currentAlbum, currentSong, audioRef, dispatch) => {
 
 	dispatch(setCurrentSong(previousSong));
 	handlePlayerBtnClick(audioRef, previousSong.audioUrl);
+	dispatch(setPaused(audioRef.paused));
 };
 
 const setNextSong = (currentAlbum, currentSong, audioRef, dispatch) => {
@@ -39,6 +41,7 @@ const setNextSong = (currentAlbum, currentSong, audioRef, dispatch) => {
 
 	dispatch(setCurrentSong(nextSong));
 	handlePlayerBtnClick(audioRef, nextSong.audioUrl);
+	dispatch(setPaused(audioRef.paused));
 };
 
 const Player = () => {
@@ -62,9 +65,9 @@ const Player = () => {
 				<div className='row center'>
 					<i
 						className={backIcon}
-						onClick={() => {
-							setPreviousSong(currentAlbum, currentSong, audioRef, dispatch);
-						}}
+						onClick={() =>
+							setPreviousSong(currentAlbum, currentSong, audioRef, dispatch)
+						}
 					/>
 					{/* play/pause btn requires a song prop, which is used to conditionally render the btn icon -- by passing currentSong here, we are asserting that this play/pause btn will always be the active one for any play/pause action */}
 					<PlayPauseBtn song={currentSong} />
@@ -77,7 +80,8 @@ const Player = () => {
 				</div>
 				{/* audioRef's onTimeUpdate event handler makes trackTime available on the redux store's audio object */}
 				<div id='track-name-and-time'>
-					<span id='track-name'>{currentSong.name}</span>
+					{/* only show song name once track has loaded */}
+					<span id='track-name'>{trackTime ? currentSong.name : ''}</span>
 					<span id='track-time'>{trackTime}</span>
 				</div>
 			</div>
