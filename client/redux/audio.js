@@ -18,9 +18,9 @@ const initState = {
 export default (state = initState, { type, payload }) => {
 	switch (type) {
 		case SET_AUDIO_REF:
-			return { ...state, audioRef: payload.audioRef };
+			return { ...state, audioRef: payload };
 		case UPDATE_TRACK_TIME:
-			return { ...state, trackTime: payload.trackTime };
+			return { ...state, trackTime: payload };
 		default:
 			return state;
 	}
