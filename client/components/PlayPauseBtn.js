@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentSong } from '../redux/currentSong';
+import { setPaused } from '../redux/audio';
 import { handlePlayerBtnClick } from './Audio';
 
 const playIcon = 'fa fa-play-circle';
@@ -9,14 +10,13 @@ const pauseIcon = 'fa fa-pause-circle';
 const PlayPauseBtn = ({ song }) => {
 	const audioRef = useSelector(state => state.audio.audioRef);
 	const currentSong = useSelector(state => state.currentSong);
-	const isPaused = useSelector(state =>
-		state.audio.audioRef ? state.audio.audioRef.paused : true
-	);
+	const isPaused = useSelector(state => state.audio.isPaused);
 
 	const dispatch = useDispatch();
 	const updateCurrentSong = thisSong => dispatch(setCurrentSong(thisSong));
 
 	const handleClick = () => {
+		dispatch(setPaused(song.id === currentSong.id && !isPaused));
 		updateCurrentSong(song);
 		handlePlayerBtnClick(audioRef, song.audioUrl);
 	};
