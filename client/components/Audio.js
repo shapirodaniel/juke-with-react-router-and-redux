@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { updateTrackTime, setAudioRef } from '../redux/audio';
 import { formatTime, setAudioSrc, playAudio, pauseAudio } from './audioHelpers';
 
@@ -11,29 +11,64 @@ export const handlePlayerBtnClick = (audioRef, newSrc) => {
 	audioRef.current.paused ? playAudio(audioRef) : pauseAudio(audioRef);
 };
 
-const Audio = () => {
-	const audioRef = useRef(null);
-	const dispatch = useDispatch();
+class Audio extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleTimeUpdate = this.handleTimeUpdate.bind(this);
+		this.audioRef = React.createRef();
+	}
 
-	useEffect(() => {
-		dispatch(setAudioRef(audioRef));
-	}, []);
+	componentDidMount() {
+		this.props.setAudioRef(this.audioRef);
+	}
 
-	const handleTimeUpdate = () => {
+	handleTimeUpdate() {
 		const currentPosition = formatTime(
-			Math.floor(audioRef.current.currentTime)
+			Math.floor(this.audioRef.current.currentTime)
 		);
-		const totalTime = formatTime(Math.floor(audioRef.current.duration));
+		const totalTime = formatTime(Math.floor(this.audioRef.current.duration));
 
 		// if-check guards against NaN:NaN totalTime before song has loaded
-		if (!isNaN(audioRef.current.duration)) {
-			dispatch(updateTrackTime(`${currentPosition} / ${totalTime}`));
+		if (!isNaN(this.audioRef.current.duration)) {
+			updateTrackTime(`${currentPosition} / ${totalTime}`);
 		}
-	};
+	}
 
-	// bind onTimeUpdate event listener that will provide
-	// current place and total time, ex. 1:45 / 3:30
-	return <audio ref={audioRef} onTimeUpdate={handleTimeUpdate} />;
-};
+	render() {
+		return <audio ref={this.audioRef} onTimeUpdate={this.handleTimeUpdate} />;
+	}
+}
 
-export default Audio;
+const mapDispatch = dispatch => ({
+	setAudioRef: ref => dispatch(setAudioRef(ref)),
+	updateTrackTime: timeString => dispatch(updateTrackTime(timeString)),
+});
+
+export default connect(null, mapDispatch)(Audio);
+
+// const Audio = () => {
+// 	const audioRef = useRef(null);
+// 	const dispatch = useDispatch();
+
+// 	useEffect(() => {
+// 		dispatch(setAudioRef(audioRef));
+// 	}, []);
+
+// 	const handleTimeUpdate = () => {
+// 		const currentPosition = formatTime(
+// 			Math.floor(audioRef.current.currentTime)
+// 		);
+// 		const totalTime = formatTime(Math.floor(audioRef.current.duration));
+
+// 		// if-check guards against NaN:NaN totalTime before song has loaded
+// 		if (!isNaN(audioRef.current.duration)) {
+// 			dispatch(updateTrackTime(`${currentPosition} / ${totalTime}`));
+// 		}
+// 	};
+
+// 	// bind onTimeUpdate event listener that will provide
+// 	// current place and total time, ex. 1:45 / 3:30
+// 	return <audio ref={audioRef} onTimeUpdate={handleTimeUpdate} />;
+// };
+
+// export default Audio;
