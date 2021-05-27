@@ -1,27 +1,35 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchAlbums } from '../redux/albums';
 import { AlbumCard } from './';
 
-const AllAlbums = () => {
-	const dispatch = useDispatch();
+class AllAlbums extends React.Component {
+	componentDidMount() {
+		this.props.loadAlbums();
+	}
 
-	useEffect(() => {
-		dispatch(fetchAlbums());
-	}, []);
+	render() {
+		console.log(this.props);
 
-	const albums = useSelector(state => state.albums);
+		return (
+			<div id='albums' className='row wrap'>
+				{this.props.albums.map(album => (
+					<Link key={album.id} to={`/albums/${album.id}`}>
+						<AlbumCard album={album} />
+					</Link>
+				))}
+			</div>
+		);
+	}
+}
 
-	return (
-		<div id='albums' className='row wrap'>
-			{albums.map(album => (
-				<Link key={album.id} to={`/albums/${album.id}`}>
-					<AlbumCard album={album} />
-				</Link>
-			))}
-		</div>
-	);
-};
+const mapState = state => ({
+	albums: state.albums,
+});
 
-export default AllAlbums;
+const mapDispatch = dispatch => ({
+	loadAlbums: () => dispatch(fetchAlbums()),
+});
+
+export default connect(mapState, mapDispatch)(AllAlbums);
