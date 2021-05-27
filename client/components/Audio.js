@@ -15,7 +15,7 @@ class Audio extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleTimeUpdate = this.handleTimeUpdate.bind(this);
-		this.audioRef = React.createRef();
+		this.audioRef = React.createRef(null);
 	}
 
 	componentDidMount() {
@@ -30,7 +30,7 @@ class Audio extends React.Component {
 
 		// if-check guards against NaN:NaN totalTime before song has loaded
 		if (!isNaN(this.audioRef.current.duration)) {
-			updateTrackTime(`${currentPosition} / ${totalTime}`);
+			this.props.updateTrackTime(`${currentPosition} / ${totalTime}`);
 		}
 	}
 
