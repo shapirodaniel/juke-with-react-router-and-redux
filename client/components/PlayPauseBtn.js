@@ -14,9 +14,17 @@ class PlayPauseBtn extends React.Component {
 	}
 
 	handleClick() {
-		const { song, currentSong, audioRef, isPaused } = this.props;
-		this.props.setPaused(song.id === currentSong.id && !isPaused);
-		this.props.updateCurrentSong(song);
+		const {
+			song,
+			currentSong,
+			audioRef,
+			isPaused,
+			setPaused,
+			updateCurrentSong,
+		} = this.props;
+
+		setPaused(song.id === currentSong.id && !isPaused);
+		updateCurrentSong(song);
 		handlePlayerBtnClick(audioRef, song.audioUrl);
 	}
 
