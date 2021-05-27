@@ -10,11 +10,11 @@ class AllAlbums extends React.Component {
 	}
 
 	render() {
-		const { albums } = this.props || [];
+		console.log(this.props);
 
 		return (
 			<div id='albums' className='row wrap'>
-				{albums.map(album => (
+				{this.props.albums.map(album => (
 					<Link key={album.id} to={`/albums/${album.id}`}>
 						<AlbumCard album={album} />
 					</Link>

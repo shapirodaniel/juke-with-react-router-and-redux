@@ -7,14 +7,14 @@ import {
 	albumsReducer,
 	currentSongReducer,
 	currentAlbumReducer,
-	isPausedReducer,
+	audioReducer,
 } from './';
 
 const rootReducer = combineReducers({
 	albums: albumsReducer,
 	currentSong: currentSongReducer,
 	currentAlbum: currentAlbumReducer,
-	isPaused: isPausedReducer,
+	audio: audioReducer,
 });
 
 export default createStore(

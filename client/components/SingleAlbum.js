@@ -6,11 +6,11 @@ import { AlbumCard, AllSongs } from './';
 
 class SingleAlbum extends React.Component {
 	componentDidMount() {
-		this.props.loadCurrentAlbum(this.props.match.params.id);
+		this.props.fetchCurrentAlbum(this.props.match.params.id);
 	}
 
 	render() {
-		const { currentAlbum } = this.props || {};
+		const { currentAlbum } = this.props;
 
 		return (
 			<div id='single-album' className='column'>
@@ -31,7 +31,7 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-	loadCurrentAlbum: albumId => dispatch(fetchCurrentAlbum(albumId)),
+	fetchCurrentAlbum: id => dispatch(fetchCurrentAlbum(id)),
 });
 
 export default connect(mapState, mapDispatch)(SingleAlbum);
