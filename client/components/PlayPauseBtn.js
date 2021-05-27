@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { setCurrentSong } from '../redux/currentSong';
 import { setPaused } from '../redux/audio';
 import { handlePlayerBtnClick } from './Audio';
@@ -7,26 +7,42 @@ import { handlePlayerBtnClick } from './Audio';
 const playIcon = 'fa fa-play-circle';
 const pauseIcon = 'fa fa-pause-circle';
 
-const PlayPauseBtn = ({ song }) => {
-	const audioRef = useSelector(state => state.audio.audioRef);
-	const currentSong = useSelector(state => state.currentSong);
-	const isPaused = useSelector(state => state.audio.isPaused);
+class PlayPauseBtn extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleClick = this.handleClick.bind(this);
+	}
 
-	const dispatch = useDispatch();
-	const updateCurrentSong = thisSong => dispatch(setCurrentSong(thisSong));
-
-	const handleClick = () => {
-		dispatch(setPaused(song.id === currentSong.id && !isPaused));
-		updateCurrentSong(song);
+	handleClick() {
+		const { song, currentSong, audioRef, isPaused } = this.props;
+		this.props.setPaused(song.id === currentSong.id && !isPaused);
+		this.props.updateCurrentSong(song);
 		handlePlayerBtnClick(audioRef, song.audioUrl);
-	};
+	}
 
-	return (
-		<i
-			className={song.id === currentSong.id && !isPaused ? pauseIcon : playIcon}
-			onClick={handleClick}
-		/>
-	);
-};
+	render() {
+		const { song, currentSong, isPaused } = this.props;
 
-export default PlayPauseBtn;
+		return (
+			<i
+				className={
+					song.id === currentSong.id && !isPaused ? pauseIcon : playIcon
+				}
+				onClick={this.handleClick}
+			/>
+		);
+	}
+}
+
+const mapState = state => ({
+	audioRef: state.audio.audioRef,
+	currentSong: state.currentSong,
+	isPaused: state.audio.isPaused,
+});
+
+const mapDispatch = dispatch => ({
+	updateCurrentSong: thisSong => dispatch(setCurrentSong(thisSong)),
+	setPaused: status => dispatch(setPaused(status)),
+});
+
+export default connect(mapState, mapDispatch)(PlayPauseBtn);
