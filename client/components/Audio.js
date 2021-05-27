@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { updateTrackTime, setAudioRef } from '../redux/audio';
 import { formatTime, setAudioSrc, playAudio, pauseAudio } from './audioHelpers';
@@ -45,30 +45,3 @@ const mapDispatch = dispatch => ({
 });
 
 export default connect(null, mapDispatch)(Audio);
-
-// const Audio = () => {
-// 	const audioRef = useRef(null);
-// 	const dispatch = useDispatch();
-
-// 	useEffect(() => {
-// 		dispatch(setAudioRef(audioRef));
-// 	}, []);
-
-// 	const handleTimeUpdate = () => {
-// 		const currentPosition = formatTime(
-// 			Math.floor(audioRef.current.currentTime)
-// 		);
-// 		const totalTime = formatTime(Math.floor(audioRef.current.duration));
-
-// 		// if-check guards against NaN:NaN totalTime before song has loaded
-// 		if (!isNaN(audioRef.current.duration)) {
-// 			dispatch(updateTrackTime(`${currentPosition} / ${totalTime}`));
-// 		}
-// 	};
-
-// 	// bind onTimeUpdate event listener that will provide
-// 	// current place and total time, ex. 1:45 / 3:30
-// 	return <audio ref={audioRef} onTimeUpdate={handleTimeUpdate} />;
-// };
-
-// export default Audio;
