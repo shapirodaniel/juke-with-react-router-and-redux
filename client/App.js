@@ -1,11 +1,10 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import store from './redux/store';
+import Provider from './context/Provider';
 import { Audio, Player, Sidebar } from './components';
 import Routes from './Routes';
 
 const App = () => (
-	<Provider store={store}>
+	<Provider>
 		<Audio />
 		<div id='main' className='row container'>
 			<Sidebar />

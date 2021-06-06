@@ -1,6 +1,5 @@
-import React, { useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { updateTrackTime, setAudioRef } from '../redux/audio';
+import React, { useRef, useEffect, useContext } from 'react';
+import { Context } from '../context/Provider';
 import { formatTime, setAudioSrc, playAudio, pauseAudio } from './audioHelpers';
 
 // click handler for audio playback/pause, used by PlayPauseBtn, SingleSong
@@ -12,12 +11,15 @@ export const handlePlayerBtnClick = (audioRef, newSrc) => {
 };
 
 const Audio = () => {
+	const { state, fetchSetAudioRef, fetchUpdateTrackTime } = useContext(Context);
+
 	const audioRef = useRef(null);
-	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(setAudioRef(audioRef));
+		fetchSetAudioRef(audioRef);
 	}, []);
+
+	console.log(state);
 
 	const handleTimeUpdate = () => {
 		const currentPosition = formatTime(
@@ -27,7 +29,7 @@ const Audio = () => {
 
 		// if-check guards against NaN:NaN totalTime before song has loaded
 		if (!isNaN(audioRef.current.duration)) {
-			dispatch(updateTrackTime(`${currentPosition} / ${totalTime}`));
+			fetchUpdateTrackTime(`${currentPosition} / ${totalTime}`);
 		}
 	};
 

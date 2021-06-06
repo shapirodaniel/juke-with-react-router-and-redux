@@ -1,19 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
+import { Context } from '../context/Provider';
 import { Link, useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchCurrentAlbum } from '../redux/currentAlbum';
 import { AlbumCard, AllSongs } from './';
 
 const SingleAlbum = () => {
 	const { id } = useParams();
 
-	const dispatch = useDispatch();
+	const { state, fetchCurrentAlbum } = useContext(Context);
+
+	const { currentAlbum } = state;
 
 	useEffect(() => {
-		dispatch(fetchCurrentAlbum(id));
+		fetchCurrentAlbum(id);
 	}, []);
-
-	const currentAlbum = useSelector(state => state.currentAlbum);
 
 	return (
 		<div id='single-album' className='column'>

@@ -1,21 +1,22 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useContext } from 'react';
+import { Context } from '../context/Provider';
 import { Link } from 'react-router-dom';
-import { fetchAlbums } from '../redux/albums';
 import { AlbumCard } from './';
 
 const AllAlbums = () => {
-	const dispatch = useDispatch();
+	const { fetchAlbums, state } = useContext(Context);
 
 	useEffect(() => {
-		dispatch(fetchAlbums());
+		let isMounted = true;
+		if (isMounted) fetchAlbums();
+		return () => {
+			isMounted = false;
+		};
 	}, []);
-
-	const albums = useSelector(state => state.albums);
 
 	return (
 		<div id='albums' className='row wrap'>
-			{albums.map(album => (
+			{state.albums.map(album => (
 				<Link key={album.id} to={`/albums/${album.id}`}>
 					<AlbumCard album={album} />
 				</Link>

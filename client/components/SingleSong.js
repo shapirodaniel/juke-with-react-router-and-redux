@@ -1,10 +1,11 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useContext } from 'react';
+import { Context } from '../context/Provider';
 import PlayPauseBtn from './PlayPauseBtn';
 
 const SingleSong = ({ trackNumber, song }) => {
-	const currentSong = useSelector(state => state.currentSong);
-	const isPaused = useSelector(state => state.audio.isPaused);
+	const { state } = useContext(Context);
+
+	const { currentSong, isPaused } = state;
 
 	const { name, artist, genre } = song;
 
