@@ -57,7 +57,9 @@ const setNextSong = (
 const Player = () => {
 	const { state, fetchSetCurrentSong, fetchSetPaused } = useContext(Context);
 
-	const { audioRef, trackTime, currentAlbum, currentSong } = state;
+	const { audio, currentAlbum, currentSong } = state;
+
+	const { audioRef, trackTime } = audio;
 
 	return (
 		<div id='player-container'>
