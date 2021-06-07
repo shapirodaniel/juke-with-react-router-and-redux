@@ -19,8 +19,6 @@ const Audio = () => {
 		fetchSetAudioRef(audioRef);
 	}, []);
 
-	console.log(state);
-
 	const handleTimeUpdate = () => {
 		const currentPosition = formatTime(
 			Math.floor(audioRef.current.currentTime)

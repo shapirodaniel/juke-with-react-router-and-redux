@@ -28,7 +28,6 @@ export default (state = initState, { type, payload }) => {
 		case UPDATE_TRACK_TIME:
 			return { ...state, trackTime: payload };
 		case SET_PAUSED:
-			console.log('inside is paused reducer');
 			return { ...state, isPaused: payload };
 		default:
 			return state;
