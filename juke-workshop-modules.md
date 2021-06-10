@@ -92,7 +92,7 @@ Great! We can now fetch in data to our functional component via `useEffect`. Our
 <details>
 <summary>Hint</summary>
 <br>
-React-Redux supplies a custom hook to replace each of our `mapState` and `mapDispatch` functions. Let's see how they work.
+React-Redux supplies a custom hook to replace our Redux boilerplate functions. Let's see how they work.
 
 `useSelector` takes a callback function with one argument -- our global state (ie our Redux store). To grab any piece of state, follow this pattern:
 
@@ -113,6 +113,8 @@ The complete flow combined with our prior `useEffect` call:
 import React, {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 
+***
+
 const dispatch = useDispatch();
 
 useEffect(() => {
@@ -124,8 +126,6 @@ useEffect(() => {
 // like componentDidMount, and only fire ONCE after rendering
 
 const albums = useSelector(state => state.albums);
-
-}
 ```
 
 </details>
@@ -170,18 +170,18 @@ const currentAlbum = useSelector(state => state.currentAlbum);
 
 ## Imperative DOM manipulation with useRef
 
-Congratulations, you've learned to manage internal and external data flow with React Hooks! Let's dig in to our Audio component next. If you'll remember, we've attached helper methods to our Audio component to simplify starting and stopping tracks, as well as providing a callback to the <audio> tag's `onTimeUpdate` event listener, which will allow us to extract playback details and provide them to our global Player component. To get access to these methods, we need an imperative handle that <em>directly interfaces</em> with our mounted <audio> element. In our class component, this was `React.createRef()`. Functional components can instead use React's `useRef` hook -- you can learn more about how `useRef` works [here](https://reactjs.org/docs/hooks-reference.html#useref).
+Congratulations, you've learned to manage internal and external data flow with React Hooks! Let's dig in to our Audio component next. If you'll remember, we've attached helper methods to our Audio component to simplify starting and stopping tracks, as well as providing a callback to the `audio` tag's `onTimeUpdate` event listener, which will allow us to extract playback details and provide them to our global Player component. To get access to these methods, we need an imperative handle that <em>directly interfaces</em> with our mounted `audio` element. In our class component, this was `React.createRef()`. Functional components can instead use React's `useRef` hook -- you can learn more about how `useRef` works [here](https://reactjs.org/docs/hooks-reference.html#useref).
 
 ## Refactoring the Audio component
 
-How will we make the ref we've attached to <audio> available globally? Our class component passes the ref into our global state -- can you figure out how to accomplish the same feat without class lifecycle methods like `componentDidMount`?
+How will we make the ref we've attached to `audio` available globally? Our class component passes the ref into our global state -- can you figure out how to accomplish the same feat without class lifecycle methods like `componentDidMount`?
 
 <details>
 <summary>Hint</summary>
 <br>
 To refactor your `React.createRef()` call, try this:
 
-Whenever `useRef` is used to track a DOM element, it's almost always supplied a `null` value initially. You'll assign the returned value from `useRef` as the `ref` prop on your <audio> tag in the functional component's return statement, and we're off to the races!
+Whenever `useRef` is used to track a DOM element, it's almost always supplied a `null` value initially. You'll assign the returned value from `useRef` as the `ref` prop on your `audio` element in the functional component's return statement, and we're off to the races!
 
 </details>
 
